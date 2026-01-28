@@ -100,15 +100,6 @@ async fn main(spawner: Spawner) {
         (*drivers_guard).set(gpio_drivers).unwrap();
     }
 
-    // {
-    //     let mut flex = Flex::new(peripherals.GPIO8);
-    //     flex.apply_output_config(&OutputConfig::default());
-    //     flex.set_output_enable(true);
-    
-    //     let p = wifi_ap::web::PIN.lock().await;
-    //     (*p).set(flex).unwrap();
-    // }
-
     // Web Tasks
     let web_app = wifi_ap::web::WebApp::default();
     for id in 0..wifi_ap::web::WEB_TASK_POOL_SIZE {

@@ -49,8 +49,6 @@ for_each_gpio! {
     };
 }
 
-// type GpioPins = Vec<Flex<'static>>; 
-
 pub static PIN_DRIVERS: Mutex<CriticalSectionRawMutex, OnceCell<GpioDrivers>> = Mutex::new(OnceCell::new());
 
 pub struct Application;
@@ -74,48 +72,6 @@ impl AppBuilder for Application {
     type PathRouter = impl routing::PathRouter;
 
     fn build_app(self) -> picoserve::Router<Self::PathRouter> {
-        // picoserve::Router::new()
-        //     .route(
-        //         "/level",
-        //         routing::get(|| async {
-        //             let mut pins_guard = PIN_DRIVERS.lock().await;
-        //             let pins = pins_guard.get_mut().unwrap();
-
-        //             let level = match pins.GPIO8.level() {
-        //                 Level::High => true,
-        //                 Level::Low => false,
-        //             };
-        //             picoserve::response::Json(LevelResponse { level })
-        //         })
-        //     )
-        //     .route(
-        //         "/toggle",
-        //         routing::get(async || {
-        //             let mut pins_guard = PIN_DRIVERS.lock().await;
-        //             let pins = pins_guard.get_mut().unwrap();
-
-        //             pins.GPIO8.toggle();
-        //         })
-        //     )
-        //     .route(
-        //         "/set/high",
-        //         routing::get(async || {
-        //             let mut pins_guard = PIN_DRIVERS.lock().await;
-        //             let pins = pins_guard.get_mut().unwrap();
-
-        //             pins.GPIO8.set_high();
-        //         })
-        //     )
-        //     .route(
-        //         "/set/low",
-        //         routing::get(async || {
-        //             let mut pins_guard = PIN_DRIVERS.lock().await;
-        //             let pins = pins_guard.get_mut().unwrap();
-
-        //             pins.GPIO8.set_low();
-        //         })
-        //     )
-
         let router = picoserve::Router::new()
             .route(
                 "/",
@@ -217,79 +173,5 @@ impl AppBuilder for Application {
                 )*
             };
         }
-
-        // for_each_gpio! {
-        //     (all $( ($n:literal, $gpio:ident ($($digital_input_function:ident => $digital_input_signal:ident)*) ($($digital_output_function:ident => $digital_output_signal:ident)*) ($([$pin_attribute:ident])*)) ),*) => {
-        //         return picoserve::Router::new()
-        //         $(
-        //             .route(
-        //                 concat!("/gpio", $n),
-        //                 routing::get(|| async move { stringify!($gpio) }),
-        //             )
-        //             .route(
-        //                 concat!("/gpio", $n, "/level"),
-        //                 routing::get(|| async move {
-        //                     let mut pin_guard = PIN.lock().await;
-        //                     let pin = pin_guard.get_mut().unwrap();
-
-        //                     pin.level().to_string()
-        //                 }),
-        //             )
-        //             // .route(
-        //             //     concat!("/", stringify!($gpio), "/get"),
-        //             //     get($gpio.read()),
-        //             // )
-        //             // .route(
-        //             //     (concat!("/", stringify!($gpio), "/set"), parse_path_segment::<bool>()),
-        //             //     post(|input| async move {
-        //             //         $gpio.set(input)
-        //             //     }),
-        //             // )
-        //         )*
-        //     };
-        // }
-
-        // picoserve::Router::new()
-        //     .route(
-        //         "/",
-        //         routing::get_service(File::html(include_str!("../html/index.html"))),
-        //     )
-        //     .route(
-        //         "/hello",
-        //         routing::get(|| async move { "Hello World" }),
-        //     )
-        //     // .route(
-        //     //     "/update",
-        //     //     routing::post(async |picoserve::extract::Form(UpdateForm { value })| {
-        //     //         info!("[HTTP] Got value {value}, putting into queue");
-        //     //         crate::uart::get_channel().send(value).await;
-        //     //         (picoserve::response::StatusCode::OK, picoserve::response::NoContent)
-        //     //     }),
-        //     // )
-        //     .route(
-        //         "/toggle",
-        //         routing::get(async || {
-        //             info!("[HTTP] TOGGGLE T HEE LEEED");
-                    
-        //             let mut pin = PIN.lock().await;
-
-        //             let p = pin.get_mut().unwrap();
-
-        //             p.level();
-
-        //             p.toggle();
-        //         })
-        //     )
-        //     // .route(
-        //     //     ("/set", parse_path_segment::<bool>()),
-        //     //     routing::get(async |val: bool| {
-        //     //         info!("[HTTP] TOGGGLE T HEE LEEED");
-                    
-        //     //         let mut pin = PIN.lock().await;
-
-        //     //         let a = pin.as_mut().unwrap();
-        //     //         a.set_level(val.into());
-        //     //     })
-        //     // )
     }
 }
