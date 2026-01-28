@@ -1,0 +1,22 @@
+{
+  "name": "esp-lab-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "daisyui": "^5.5.14",
+    "preact": "^10.27.2",
+    "swr": "^2.3.8",
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.2",
+    "vite": "^7.2.4"
+  }
+}
